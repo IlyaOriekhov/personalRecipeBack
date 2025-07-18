@@ -17,6 +17,7 @@ export const handleCreateRecipe = async (
     res.status(201).json(newRecipe);
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
+    console.error(error);
   }
 };
 
@@ -26,6 +27,7 @@ export const handleGetAllRecipes = async (req: Request, res: Response) => {
     res.json(recipes);
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
+    console.error(error);
   }
 };
 
@@ -41,6 +43,7 @@ export const handleGetRecipeById = async (req: Request, res: Response) => {
     res.json(recipe);
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
+    console.error(error);
   }
 };
 
@@ -74,6 +77,7 @@ export const handleUpdateRecipe = async (
     res.json(updatedRecipe);
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
+    console.error(error);
   }
 };
 
@@ -103,6 +107,7 @@ export const handleDeleteRecipe = async (
     res.json({ message: "Recipe deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
+    console.error(error);
   }
 };
 
@@ -120,5 +125,27 @@ export const handleGetMyRecipes = async (
     res.json(recipes);
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
+    console.error(error);
   }
+};
+
+export const handleSearchRecipes = async (req: Request, res: Response) => {
+  const searchTerm = req.query.q as string;
+
+  if (!searchTerm) {
+    return res.status(400).json({ message: "Search term is required" });
+  }
+
+  const recipes = await prisma.recipe.findMany({
+    where: {
+      title: {
+        contains: searchTerm,
+        mode: "insensitive",
+      },
+    },
+    include: {
+      author: { select: { name: true } },
+    },
+  });
+  res.json(recipes);
 };

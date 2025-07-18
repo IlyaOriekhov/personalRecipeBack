@@ -8,11 +8,13 @@ import {
   handleGetAllRecipes,
   handleGetMyRecipes,
   handleGetRecipeById,
+  handleSearchRecipes,
   handleUpdateRecipe,
 } from "./recipes.controller";
 
 const router = Router();
 
+router.get("/search", handleSearchRecipes);
 router.get("/mine", authMiddleware, handleGetMyRecipes);
 
 router.get("/", handleGetAllRecipes);
