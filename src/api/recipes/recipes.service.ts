@@ -39,6 +39,7 @@ export const getRecipeById = (id: number) => {
           name: true,
         },
       },
+      ratings: true,
     },
   });
 };

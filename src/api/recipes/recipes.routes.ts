@@ -8,6 +8,7 @@ import {
   handleGetAllRecipes,
   handleGetMyRecipes,
   handleGetRecipeById,
+  handleRateRecipe,
   handleSearchRecipes,
   handleUpdateRecipe,
 } from "./recipes.controller";
@@ -25,5 +26,7 @@ router.post("/", authMiddleware, handleCreateRecipe);
 router.put("/:id", authMiddleware, handleUpdateRecipe);
 
 router.delete("/:id", authMiddleware, handleDeleteRecipe);
+
+router.post("/:id/rate", authMiddleware, handleRateRecipe);
 
 export default router;

@@ -149,3 +149,32 @@ export const handleSearchRecipes = async (req: Request, res: Response) => {
   });
   res.json(recipes);
 };
+
+export const handleRateRecipe = async (req: RequestWithUser, res: Response) => {
+  const recipeId = parseInt(req.params.id);
+  const userId = req.user!.userId;
+  const { value } = req.body;
+
+  if (value < 1 || value > 5) {
+    return res
+      .status(400)
+      .json({ message: "Rating value must be between 1 and 5" });
+  }
+
+  try {
+    const newRating = await prisma.rating.upsert({
+      where: {
+        userId_recipeId: {
+          userId,
+          recipeId,
+        },
+      },
+      update: { value },
+      create: { userId, recipeId, value },
+    });
+    res.status(201).json(newRating);
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+    console.error(error);
+  }
+};
