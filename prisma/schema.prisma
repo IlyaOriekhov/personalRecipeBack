@@ -37,7 +37,18 @@ model Recipe {
   updatedAt    DateTime @updatedAt
 }
 
-// рейтинги
+
+
+
+
+
+
+
+
+
+
+
+ рейтинги
 model Rating {
   id       Int    @id @default(autoincrement())
   value    Int
