@@ -1,0 +1,50 @@
+// prisma/schema.prisma
+
+//  URL з .env
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// це генерую клієнт для тайпскрипта
+generator client {
+  provider = "prisma-client-js"
+}
+
+// користувачі
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  name      String?
+  password  String
+  recipes   Recipe[]
+  ratings   Rating[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// рецепти
+model Recipe {
+  id           Int      @id @default(autoincrement())
+  title        String
+  description  String?
+  ingredients  String[]
+  instructions String
+  authorId     Int
+  author       User     @relation(fields: [authorId], references: [id])
+  ratings      Rating[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+// рейтинги
+model Rating {
+  id       Int    @id @default(autoincrement())
+  value    Int
+  userId   Int
+  user     User   @relation(fields: [userId], references: [id])
+  recipeId Int
+  recipe   Recipe @relation(fields: [recipeId], references: [id])
+
+  @@unique([userId, recipeId]) // оцінити рецепт лише раз
+}
