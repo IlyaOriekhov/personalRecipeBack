@@ -30,6 +30,7 @@ model Recipe {
   description  String?
   ingredients  String[]
   instructions String
+  imageUrl     String?
   authorId     Int
   author       User     @relation(fields: [authorId], references: [id])
   ratings      Rating[]
@@ -37,18 +38,7 @@ model Recipe {
   updatedAt    DateTime @updatedAt
 }
 
-
-
-
-
-
-
-
-
-
-
-
- рейтинги
+// рейтинги
 model Rating {
   id       Int    @id @default(autoincrement())
   value    Int

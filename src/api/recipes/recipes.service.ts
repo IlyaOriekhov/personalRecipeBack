@@ -5,6 +5,7 @@ interface RecipeData {
   description?: string;
   ingredients: string[];
   instructions: string;
+  imageUrl?: string;
 }
 
 export const createRecipe = (recipeData: RecipeData, authorId: number) => {
