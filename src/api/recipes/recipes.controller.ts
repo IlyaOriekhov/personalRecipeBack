@@ -121,6 +121,13 @@ export const handleGetMyRecipes = async (
       where: {
         authorId: userId,
       },
+      include: {
+        author: {
+          select: {
+            name: true,
+          },
+        },
+      },
     });
     res.json(recipes);
   } catch (error) {
