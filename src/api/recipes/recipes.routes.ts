@@ -6,11 +6,14 @@ import {
   handleCreateRecipe,
   handleDeleteRecipe,
   handleGetAllRecipes,
+  handleGetMyRecipes,
   handleGetRecipeById,
   handleUpdateRecipe,
 } from "./recipes.controller";
 
 const router = Router();
+
+router.get("/mine", authMiddleware, handleGetMyRecipes);
 
 router.get("/", handleGetAllRecipes);
 router.get("/:id", handleGetRecipeById);

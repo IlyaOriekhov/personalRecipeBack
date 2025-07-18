@@ -105,3 +105,20 @@ export const handleDeleteRecipe = async (
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const handleGetMyRecipes = async (
+  req: RequestWithUser,
+  res: Response
+) => {
+  try {
+    const userId = req.user!.userId;
+    const recipes = await prisma.recipe.findMany({
+      where: {
+        authorId: userId,
+      },
+    });
+    res.json(recipes);
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
