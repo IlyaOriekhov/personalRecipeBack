@@ -5,6 +5,7 @@ import { authMiddleware } from "../../middleware/auth.middleware";
 import {
   handleCreateRecipe,
   handleDeleteRecipe,
+  handleGetAiTip,
   handleGetAllRecipes,
   handleGetMyRecipes,
   handleGetRecipeById,
@@ -28,5 +29,7 @@ router.put("/:id", authMiddleware, handleUpdateRecipe);
 router.delete("/:id", authMiddleware, handleDeleteRecipe);
 
 router.post("/:id/rate", authMiddleware, handleRateRecipe);
+
+router.post("/:id/ai-tip", authMiddleware, handleGetAiTip);
 
 export default router;

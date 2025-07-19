@@ -4,6 +4,8 @@ import * as RecipeService from "./recipes.service";
 
 import prisma from "../../db";
 
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
 export const handleCreateRecipe = async (
   req: RequestWithUser,
   res: Response
@@ -183,5 +185,31 @@ export const handleRateRecipe = async (req: RequestWithUser, res: Response) => {
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
     console.error(error);
+  }
+};
+
+export const handleGetAiTip = async (req: Request, res: Response) => {
+  const recipeId = parseInt(req.params.id);
+
+  try {
+    const recipe = await prisma.recipe.findUnique({ where: { id: recipeId } });
+    if (!recipe) return res.status(404).json({ message: "Recipe not found" });
+
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+    const prompt = `You are a helpful cooking assistant. For the recipe "${
+      recipe.title
+    }", with ingredients "${recipe.ingredients.join(
+      ", "
+    )}", provide one short, helpful, and creative tip for cooking or serving it. Respond in Ukrainian.`;
+
+    const result = await model.generateContent(prompt);
+    const tip = result.response.text();
+
+    res.json({ tip });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to get AI tip." });
   }
 };

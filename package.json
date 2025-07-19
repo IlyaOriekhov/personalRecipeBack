@@ -38,6 +38,7 @@
     "typescript-eslint": "^8.37.0"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "@prisma/client": "^6.12.0",
     "@types/bcryptjs": "^2.4.6",
     "bcrypt": "^6.0.0",
